@@ -3,8 +3,13 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import { Canvas, Group, RoundedRect, runTiming, Skia, useComputedValue, useValue, vec } from '@shopify/react-native-skia';
 import { processTransform3d, toMatrix3 } from "react-native-redash";
 
-const colors = ["#deb7ff", "#c785ec", "#a86add", "#8549a7", "#634087"];
-const NUM_OF_CONFETTI = 70;
+const colors = [
+  "#ffd700",
+  "#ffffff",
+  "#c0c0c0",
+  "#e5e4e2",
+  "#f8f8ff"
+];const NUM_OF_CONFETTI = 70;
 const { height, width } = Dimensions.get("window");
 
 const relativeSin = (yPosition, offsetId) => {
@@ -84,7 +89,7 @@ export const ConfettiEffect = ({ trigger }) => {
 
     for (let i = 0; i < NUM_OF_CONFETTI; i++) {
       const startingXOffset = Math.random() * width;
-      const startingYOffset = -Math.random() * (height * 3);
+      const startingYOffset = -Math.random() * (height * 5);
       const id = i + Math.random() + "";
       pieces.push({
         offsetId: id,
