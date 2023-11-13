@@ -1,50 +1,26 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Button, Alert } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
 import { Audio } from 'expo-av';
-import Countdown from 'react-native-countdown-component';
 
 export default function App() {
-  const [timer, setTimer] = useState(null);
-  const [sound, setSound] = useState();
+  const fullsound_file = require('./assets/fullsound.wav');
 
-  const testSound1 = require('./assets/testsound.wav');
-  const testSound2 = require('./assets/testsound2.mp3');
+  const handlePress = async () => {
+    // Load sounds
+    const { sound: loadedfullsound } = await Audio.Sound.createAsync(fullsound_file);
 
-async function playSound(soundModule) {
-  const { sound } = await Audio.Sound.createAsync(soundModule);
-  setSound(sound);
-  await sound.playAsync();
-}
-  async function stopSound() {
-    if (sound) {
-      await sound.stopAsync();
-      await sound.unloadAsync();
-      setSound(null);
-    }
-  }
-
-  const handlePress = () => {
-    playSound(testSound1);
-    setTimer(
-      <Countdown
-        until={Math.random() * (6 - 3) + 3}
-        size={20}
-        onFinish={() => {
-          stopSound();
-          playSound(testSound2);
-        }}
-        digitStyle={{backgroundColor: '#FFF'}}
-        digitTxtStyle={{color: '#1CC625'}}
-        timeToShow={['S']}
-        timeLabels={{s: null}}
-      />
-    );
+    // Play the start sound and wait for it to finish
+    await loadedfullsound.playAsync();
   };
 
   return (
     <View style={styles.container}>
-      {timer}
-      <Button title="Spin" onPress={handlePress} color="#841584" />
+      <TouchableOpacity
+        style={styles.spinButton}
+        onPress={handlePress}
+      >
+        <Text style={styles.spinButtonText}>Spin !</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -55,6 +31,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#0e0e0e', // Dark background
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  spinButton: {
+    backgroundColor: '#FF0000', // Red background
+    width: 100, // Adjust size as needed
+    height: 100, // Adjust size as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50, // Half of width and height to make it circle
+  },
+  spinButtonText: {
+    color: '#FFFFFF', // White text
+    fontWeight: 'bold',
   },
 });
 
