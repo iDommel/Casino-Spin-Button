@@ -1,24 +1,23 @@
-import React from 'react';
-import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
+import { ConfettiEffect } from './src/ConfettiEffect'; // Import the confetti effect
 
 export default function App() {
+  const [triggerConfetti, setTriggerConfetti] = useState(false);
   const fullsound_file = require('./assets/fullsound.wav');
 
   const handlePress = async () => {
-    // Load sounds
     const { sound: loadedfullsound } = await Audio.Sound.createAsync(fullsound_file);
 
-    // Play the start sound and wait for it to finish
     await loadedfullsound.playAsync();
+    setTriggerConfetti(true); // Trigger the confetti effect
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.spinButton}
-        onPress={handlePress}
-      >
+      <ConfettiEffect trigger={triggerConfetti} />
+      <TouchableOpacity style={styles.spinButton} onPress={handlePress}>
         <Text style={styles.spinButtonText}>Spin !</Text>
       </TouchableOpacity>
     </View>
